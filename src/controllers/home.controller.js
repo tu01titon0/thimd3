@@ -100,7 +100,7 @@ class HomeController {
             req.on('end',()=>{
                 let reqData = qs.parse(data)
                 let {name, country, count_bedrooms, count_toilets, description, price} = reqData
-                homeModel.createHome(name, country, count_bedrooms, count_toilets, description, price)
+                homeModel.editlHome(name, country, count_bedrooms, count_toilets, description, price)
                 fs.readFile('./src/views/home.html','utf-8',function (err, dataHtml) {
                     res.writeHead(301,{location:`/home`})
                     res.write(dataHtml)
