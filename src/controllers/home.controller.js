@@ -70,9 +70,18 @@ class HomeController {
     
     async detailHome(req, res){
         let id = qs.parse(url.parse(req.url).query).id;
-        if (id){
+        let home =  await homeModel.findHomById(id)
+        console.log(home);
+        if (id && home.length > 0){
             fs.readFile('./src/views/detail.html','utf-8',function (err, dataHtml) {
+                dataHtml = dataHtml.replace('{homestay-name}','')
+                dataHtml = dataHtml.replace('{homestay-city}',"")
+                dataHtml = dataHtml.replace('{homestay-bedroom}',"")
+                dataHtml = dataHtml.replace('{homestay-restroom}',"")
+                dataHtml = dataHtml.replace('{homestay-price}',"")
+                dataHtml = dataHtml.replace('{homestay-des}',"")
                 res.writeHead(301,{location:`/detail?id=${id}`})
+
                 res.write(dataHtml)
                 res.end()
             })
@@ -81,6 +90,23 @@ class HomeController {
             res.end()
         }
         
+    }
+    async editlHome(req, res){
+        let id = qs.parse(url.parse(req.url).query).id;
+        let data =''
+            req.on('data',chunk=>{
+                data+=chunk
+            })
+            req.on('end',()=>{
+                let reqData = qs.parse(data)
+                let {name, country, count_bedrooms, count_toilets, description, price} = reqData
+                homeModel.createHome(name, country, count_bedrooms, count_toilets, description, price)
+                fs.readFile('./src/views/home.html','utf-8',function (err, dataHtml) {
+                    res.writeHead(301,{location:`/home`})
+                    res.write(dataHtml)
+                    res.end()
+                })
+            })
     }
 
 }

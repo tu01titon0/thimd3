@@ -89,12 +89,19 @@ handlers.detailHome = async (req, res)=>{
         console.log(err.message);
     });
 };
+handlers.edit = async (req, res)=>{
+    await homeController.detailHome(req, res).catch((err) => {
+        console.log(err.message);
+    });
+};
+
 router = {
     '/': handlers.home,
     '/home': handlers.home,
     '/new': handlers.new,
     '/detail': handlers.detailHome,
     '/delete': handlers.deleteHome,
+    '/edit': handlers.edit,
 };
 
 

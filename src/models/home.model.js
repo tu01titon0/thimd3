@@ -16,7 +16,12 @@ class HomeModel extends BaseModel{
     async deleteHome(id) {
         let sql = `DELETE FROM HOMESTAY WHERE ID = ${id}`;
         return await this.querySql(sql);
-      }
+    } 
+    
+    async findHomById(id) {
+        let sql = `select * from HomeStay where id = ${parseInt(id)}`;
+        return await this.querySql(sql);
+    } 
 
 }
 
